@@ -46,6 +46,7 @@ const addUser = (request, response, body) => {
   if (!users[body.name]) {
     responseCode = 201;
     users[body.name] = {};
+    responseJSON.message = 'New user created successfully!';
   }
 
   users[body.name].name = body.name;
@@ -55,7 +56,8 @@ const addUser = (request, response, body) => {
     return respondJSONMeta(request, response, 204);
   }
 
-  return respondJSON(request, response, 201, JSON.stringify(users[body.name]));
+  responseJSON.newUser = users[body.name];
+  return respondJSON(request, response, 201, JSON.stringify(responseJSON));
 };
 
 module.exports = {

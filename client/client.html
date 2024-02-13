@@ -5,29 +5,52 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
   
   <script>
-    const handleResponse = async (response) => {
+    const handleResponse = async (response, isNotHead) => {
+      const responseText = await response.text();
+      console.log(responseText);
+      
       const content = document.getElementById('content');
+      content.innerHTML = '';
+
+      const statusHeader = document.createElement('h1');
+      const statusDesc = document.createElement('p');
 
       switch (response.status){
         case 200:
-
+          statusHeader.appendChild(document.createTextNode('Success'));
           break;
         case 201:
-
+          statusHeader.appendChild(document.createTextNode('Created'));
           break;
         case 204:
-
+          statusHeader.appendChild(document.createTextNode('Updated (No Content)'));
           break;
         case 400: 
-
+          statusHeader.appendChild(document.createTextNode('Bad Request'));
           break;
         case 404:
-
+          statusHeader.appendChild(document.createTextNode('Not Found'));
           break;
         default:
-
+          statusHeader.appendChild(document.createTextNode('Status Code Not Implemented'));
           break;
       }
+
+      content.appendChild(statusHeader);
+
+      if (!isNotHead || response.status === 204) { return; }
+
+      let parsedData = JSON.parse(responseText);
+      let message = parsedData.message;
+      let users = parsedData.users;
+      if (users) { 
+        statusDesc.appendChild(document.createTextNode(`${JSON.stringify(users)}`));
+      } else if (message) {
+        statusDesc.appendChild(document.createTextNode(`Message: ${message}`));
+      }
+      
+
+      content.appendChild(statusDesc);
     };
 
     const sendPost = async (nameForm) => {
@@ -48,16 +71,16 @@
         body: formData
       });
 
-      handleResponse(response);
+      handleResponse(response, method !== 'head');
     };
 
-    const sendRequest = async (userForm) => {
-      const url = userForm.getAttribute('action');
-      const method = userForm.getAttribute('method');
+    const sendRequest = async () => {
+      const url = document.getElementById('urlField').value;
+      const method = document.getElementById('methodSelect').value;
 
       const response = await fetch(url, {method});
 
-      handleResponse(response);
+      handleResponse(response, method !== 'head');
     };
 
     const init = () => {
@@ -72,7 +95,7 @@
 
       const request = (e) => {
         e.preventDefault();
-        sendRequest(user);
+        sendRequest();
         return false;
       };
 

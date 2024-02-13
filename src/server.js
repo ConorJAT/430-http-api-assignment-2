@@ -46,7 +46,7 @@ const urlStruct = {
     notReal: jsonHandler.notRealMeta,
   },
   POST: {
-    '/addUsers': parseBody,
+    '/addUser': parseBody,
   },
 };
 
