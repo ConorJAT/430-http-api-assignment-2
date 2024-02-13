@@ -5,7 +5,82 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
   
   <script>
+    const handleResponse = async (response) => {
+      const content = document.getElementById('content');
 
+      switch (response.status){
+        case 200:
+
+          break;
+        case 201:
+
+          break;
+        case 204:
+
+          break;
+        case 400: 
+
+          break;
+        case 404:
+
+          break;
+        default:
+
+          break;
+      }
+    };
+
+    const sendPost = async (nameForm) => {
+      const url = nameForm.getAttribute('action');
+      const method = nameForm.getAttribute('method');
+
+      const name = nameForm.querySelector('#nameField').value;
+      const age = nameForm.querySelector('#ageField').value;
+
+      const formData = `name=${name}&age=${age}`;
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlenconded'
+        },
+        body: formData
+      });
+
+      handleResponse(response);
+    };
+
+    const sendRequest = async (userForm) => {
+      const url = userForm.getAttribute('action');
+      const method = userForm.getAttribute('method');
+
+      const response = await fetch(url, {method});
+
+      handleResponse(response);
+    };
+
+    const init = () => {
+      const name = document.getElementById('nameForm');
+      const user = document.getElementById('userForm');
+
+      const addUser = (e) => {
+        e.preventDefault();
+        sendPost(name);
+        return false;
+      };
+
+      const request = (e) => {
+        e.preventDefault();
+        sendRequest(user);
+        return false;
+      };
+
+      name.addEventListener('submit', addUser);
+      user.addEventListener('submit', request);
+    };
+
+    window.onload = init;
   </script>
 </head>
 <body>
