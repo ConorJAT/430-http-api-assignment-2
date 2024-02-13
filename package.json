@@ -1,0 +1,18 @@
+{
+  "name": "430-http-api-assignment-2",
+  "version": "1.0.0",
+  "description": "Server API assignment for GET, HEAD, and POST requests.",
+  "main": "./src/server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Tests Complete!\""
+  },
+  "author": "Conor Race",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.29.1"
+  }
+}
